@@ -20,3 +20,4 @@ input/patient/dose.npy
 
 # Ignore idea stuff
 .idea/
+/input/patient/anon_brain_boost
