@@ -3,7 +3,7 @@ from workflows import BloodDoseFromFields, BloodDoseFromDVH
 # =================== Simulation parameters ==================== #
 sample_size = 100000    # nr simulation particles
 nr_steps = 2400         # nr time steps
-dt = 0.05               # in seconds
+dt = 0.05               # in secondss
 weibull_shape = 2
 generate_new = True
 random_walk = False

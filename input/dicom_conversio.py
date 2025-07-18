@@ -41,11 +41,14 @@ def extract_structures(rtstruct, reference_image):
     return structure_masks
 
 def load_dose_image(rtdose_path):
-    """Load RTDose as a SimpleITK image."""
     dose_ds = pydicom.dcmread(rtdose_path)
     dose_array = dose_ds.pixel_array * dose_ds.DoseGridScaling
+    
     dose_image = sitk.GetImageFromArray(dose_array)
-    dose_image.SetSpacing(dose_ds.PixelSpacing + [dose_ds.SliceThickness])
+    z_spacing = float(dose_ds.GridFrameOffsetVector[1] - dose_ds.GridFrameOffsetVector[0]) if hasattr(dose_ds, 'GridFrameOffsetVector') else 1.0
+    spacing = [float(dose_ds.PixelSpacing[0]), float(dose_ds.PixelSpacing[1]), z_spacing]
+    dose_image.SetSpacing(spacing)
+
     dose_image.SetOrigin([float(x) for x in dose_ds.ImagePositionPatient])
     return dose_image
 
@@ -87,10 +90,10 @@ def save_hedos_inputs(ct_image, structure_masks, dose_image, output_dir):
     np.savez_compressed(os.path.join(output_dir, 'compressed_segs.npz'), **seg_arrays)
 
 # Example usage (update paths accordingly)
-ct_dir = "path/to/CT"
-rtstruct_path = "path/to/RTStruct.dcm"
-rtdose_path = "path/to/RTDose.dcm"
-output_dir = "hedos_patient_data"
+ct_dir = r"input\patient\CT"
+rtstruct_path = r"input\patient\RS.1.2.246.352.221.4964869387009893961.14760921302682794112.dcm"
+rtdose_path = r"input\patient\RD.1.2.246.352.221.5553135944025373980.12668351133436097682.dcm"
+output_dir = r"input\patient"
 
 ct_image = load_dicom_series(ct_dir)
 rtstruct = load_dicom_file(rtstruct_path)

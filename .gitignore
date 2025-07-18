@@ -21,3 +21,9 @@ input/patient/dose.npy
 # Ignore idea stuff
 .idea/
 /input/patient/anon_brain_boost
+/input/patient/CT
+*.npz
+*.csv
+*.npy
+*.dcm
+input/patient/compressed_segs.npz
